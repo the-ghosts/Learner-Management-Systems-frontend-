@@ -8,7 +8,18 @@ const MainWrapper = ({ children }) => {
         const handler = async () => {
             setLoading(true);
 
-            await setUser();
+            const token = localStorage.getItem('refresh_token'); 
+            
+            if (!token) {
+                setLoading(false);
+                return; // 🛑 Stop! Don't run setUser()
+            }
+
+            try {
+                await setUser();
+            } catch (error) {
+                console.error("Error setting user", error);
+            }
 
             setLoading(false);
         };
